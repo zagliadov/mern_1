@@ -3,16 +3,26 @@ import { Title } from './Title';
 import { useSelector, useDispatch } from 'react-redux';
 import { getArticlesFromDataBase, scrollUpdate } from '../store/actions';
 import { ScrollTop } from './ScrollTop';
+import { makeStyles } from '@material-ui/core';
 
+const useStyles = makeStyles(theme => ({
+    root: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+    }
+}))
 
 export const Posts = () => {
 
     const dispatch = useDispatch();
     const open = useSelector(state => state.open);
     const scrollPosition = useSelector(state => state.scrollPosition)
-
+    const checkingScrollHight = window.pageYOffset > document.documentElement.clientHeight
+    const classes = useStyles();
+    
     useEffect(() => {
-     dispatch(getArticlesFromDataBase())
+        dispatch(getArticlesFromDataBase())
         dispatch(getArticlesFromDataBase(scrollPosition))
 
     }, [open, scrollPosition, dispatch]);
@@ -31,18 +41,9 @@ export const Posts = () => {
 
 
     return (
-        <div>
+        <div className={classes.root}>
             <Title />
-
-            {(window.pageYOffset > document.documentElement.clientHeight) ?
-                <ScrollTop />
-                : null}
-            {/* <button onClick={() => dispatch(getArticlesFromDataBase(2))}>1</button>
-            <button onClick={() => dispatch(getArticlesFromDataBase(4))}>2</button>
-            <button onClick={() => dispatch(getArticlesFromDataBase(8))}>3</button>
-            <button onClick={() => dispatch(getArticlesFromDataBase(12))}>4</button>
-            <button onClick={() => dispatch(getArticlesFromDataBase(16))}>5</button>
-            <button onClick={() => dispatch(getArticlesFromDataBase(20))}>6</button> */}
+            {checkingScrollHight ? <ScrollTop /> : null}
         </div>
     );
 }

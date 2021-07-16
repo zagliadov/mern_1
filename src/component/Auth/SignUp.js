@@ -13,7 +13,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { useSelector, useDispatch } from 'react-redux';
+import {useDispatch } from 'react-redux';
 import { createUser } from '../../store/actions';
 
 
@@ -43,7 +43,7 @@ export const SignUp = () => {
   const { register, handleSubmit } = useForm();
 
   const dispatch = useDispatch();
-  const users = useSelector(state => state.users);
+  //const users = useSelector(state => state.users);
   
   
 

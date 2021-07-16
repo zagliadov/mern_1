@@ -2,7 +2,7 @@ import { AppBar, Button, makeStyles, Toolbar, Typography } from '@material-ui/co
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { saveUserType } from '../store/actions';
+import { logOut, reloadRole } from '../store/actions';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -23,21 +23,18 @@ const useStyles = makeStyles((theme) => ({
 export const Menu = () => {
     const classes = useStyles();
 
-    const user = useSelector(state => state.user);
+    const role = useSelector(state => state.role);
     const dispatch = useDispatch();
 
-
-
     useEffect(() => {
-        if (localStorage.getItem('user')) {
-            dispatch(saveUserType(localStorage.getItem('user')))
+        if (localStorage.getItem('role')) {
+            dispatch(reloadRole(localStorage.getItem('role')));
         }
-
-    }, [user, dispatch])
+    }, [dispatch]);
 
     const LogOut = () => {
-        dispatch(saveUserType('USER'))
-        localStorage.setItem('user', 'USER')
+        dispatch(logOut());
+        localStorage.removeItem('role');
     }
 
 
@@ -54,7 +51,7 @@ export const Menu = () => {
                         className={classes.title} >
                         Main
                     </Typography>
-                    {(user === "USER") ?
+                    {!role ?
                         <Button
                             variant='contained'
                             color='primary'
@@ -63,7 +60,7 @@ export const Menu = () => {
                             Sign up
                         </Button>
                         : null}
-                    {(user === 'USER') ?
+                    {role ? null :
                         <Button
                             variant='contained'
                             color='primary'
@@ -71,7 +68,8 @@ export const Menu = () => {
                             to='/signin' >
                             Sign in
                         </Button>
-                        : null}
+                    }
+
 
                     {/* <Button
                         variant='contained'
@@ -79,10 +77,10 @@ export const Menu = () => {
                         component={Link}
                         to='/signup' >
                         Sign up
-                    </Button>
+                    </Button> */}
 
 
-                    <Button
+                    {/* <Button
                         variant='contained'
                         color='primary'
                         component={Link}
@@ -97,23 +95,26 @@ export const Menu = () => {
                         to='/posts' >
                         All articles
                     </Button>
-                    {(user === 'ADMIN') ?
-                        <Button
-                            variant='contained'
-                            color='primary'
-                            component={Link}
-                            to='/create' >
-                            Create
-                        </Button>
-                        : null}
 
-
+                    {(role === 'ADMIN') ? 
                     <Button
-                        onClick={() => LogOut()}
                         variant='contained'
-                        color='primary'>
-                        Log out
+                        color='primary'
+                        component={Link}
+                        to='/create' >
+                        Create
                     </Button>
+                    : null }
+
+
+                    {role &&
+                        <Button
+                            onClick={() => LogOut()}
+                            variant='contained'
+                            color='primary'>
+                            Log out
+                        </Button>
+                    }
                 </Toolbar>
             </AppBar>
         </div>

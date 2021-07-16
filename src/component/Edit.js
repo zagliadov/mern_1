@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { postUpdate, updateArticle } from '../store/actions';
+import { postUpdate } from '../store/actions';
 import { useForm } from 'react-hook-form';
 import { makeStyles } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
@@ -35,15 +35,15 @@ export const Edit = ({ match }) => {
     const classes = useStyles();
     const post = useSelector(state => state.post);
     const { register, handleSubmit } = useForm();
-    const open = useSelector(state => state.open);
     const dispatch = useDispatch();
     const history = useHistory();
 
 
-    const onSubmit = (data) => {
-        dispatch(postUpdate(post, post.title = data.title, post.text = data.text));
-        dispatch(updateArticle(!open))
-        history.push(`/post/${post._id}`);
+    const onSubmit = async (data) => {
+        await dispatch(postUpdate(post, post.title = data.title, post.text = data.text));
+        //dispatch(updateArticle(!open))
+        // history.push(`/post/${post._id}`);
+        await history.push(`/posts`);
     }
 
     return (

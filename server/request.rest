@@ -1,0 +1,12 @@
+GET http://localhost:9001/signin
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYXNoUGFzc3dvcmQiOiI4ZjM4YjMwNDJjYzMzNDdkZWM2YjU2ZmE4ZDBmMGNmYWRiYTc5MzhjZDQ3MzRlZDU4NjM0Nzc1Y2UzNjQ5NzU3IiwiZW1haWwiOiJwb3J0YWwuc2lkLmdyYW5kMkBnbWFpbC5jb20iLCJpYXQiOjE2MjYzNDA4NzB9.2PwWMIr-gmZOVtcgnRXj2clmU-0wMx4YJBgpYtDGN6A
+
+###
+
+POST http://localhost:9001/signin
+Content-Type: application/json 
+
+{
+    "email": "portal.sid.grand2@gmail.com",
+    "password": "000"
+}

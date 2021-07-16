@@ -1,4 +1,4 @@
-import { GET_ARTICLE, CREATE_USER, GET_USER, OPEN, GET_MATCH_PARAMS_ID, SCROLL } from "./types"
+import { GET_ARTICLE, CREATE_USER, GET_TOKEN, GET_ROLE, OPEN, GET_MATCH_PARAMS_ID, SCROLL, REMOVE_ROLE, RELOAD_PAGE } from "./types"
 
 const initialValue = {
     posts: [],
@@ -6,7 +6,8 @@ const initialValue = {
     post: [],
     scrollPosition: 0,
     users: [],
-    user: [],
+    token: '',
+    role: '',
 
 }
 
@@ -23,9 +24,15 @@ export const postsReducer = (state = initialValue, action) => {
         case CREATE_USER:
             console.log('create: ', action.payload)
             return { ...state, users: action.payload }
-        case GET_USER:
-            console.log('GET ', action.payload)
-            return { ...state, user: action.payload }
+        case GET_TOKEN:
+            console.log(action.payload)
+            return { ...state, token: action.payload }
+        case GET_ROLE:
+            return {...state, role: action.payload[0]}
+        case REMOVE_ROLE:
+            return {...state, role: action.payload}
+        case RELOAD_PAGE:
+            return {...state, role: action.payload}
         default: return state
     }
 }

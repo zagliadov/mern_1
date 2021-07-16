@@ -13,7 +13,7 @@ import Container from '@material-ui/core/Container';
 import { Link, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux';
-import { saveUserType, signIn } from '../../store/actions';
+import { signIn } from '../../store/actions';
 
 
 
@@ -39,26 +39,27 @@ const useStyles = makeStyles((theme) => ({
 
 export const SignIn = () => {
   const classes = useStyles();
-  const {register, handleSubmit} = useForm();
+  const { register, handleSubmit } = useForm();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user[0])
+  const token = useSelector((state) => state.token);
   const history = useHistory();
 
-  const onSubmit = (data) => {
-    dispatch(signIn(data))
 
-  }
 
   useEffect(() => {
-    if(user === 'ADMIN') {
-      console.log(user)
-      localStorage.setItem('user', user)
-      history.push('/')
-    }
-   
-    
-  }, [user])
-  
+    if (!token) return
+
+  }, [dispatch, token])
+
+
+  const onSubmit = (data) => {
+    dispatch(signIn(data));    
+    history.push('/');
+  }
+
+
+
+
 
   return (
     <Container component="main" maxWidth="xs">
@@ -70,9 +71,9 @@ export const SignIn = () => {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form 
-        onSubmit={handleSubmit(onSubmit)}
-        className={classes.form} noValidate>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className={classes.form} noValidate>
           <TextField
             variant="outlined"
             margin="normal"
@@ -81,7 +82,7 @@ export const SignIn = () => {
             id="email"
             label="Email Address"
             name="email"
-            {...register('email', {required: true})}
+            {...register('email', { required: true })}
             autoComplete="email"
             autoFocus
           />
@@ -94,7 +95,7 @@ export const SignIn = () => {
             label="Password"
             type="password"
             id="password"
-            {...register('password', {required: true})}
+            {...register('password', { required: true })}
             autoComplete="current-password"
           />
           <FormControlLabel

@@ -7,10 +7,7 @@ export const Container = ({children}) => {
         <Grid 
         container
         deriction='row'
-        justify='center'
-        widht='100%'
-        spacing={3}
-        style={{padding: '50px 0'}} >
+        >
             {children}
         </Grid>
     );

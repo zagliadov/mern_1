@@ -6,8 +6,10 @@ import { Routing } from './component/Routing/router';
 import { Menu } from './component/Menu';
 import { Footer } from './component/Footer';
 
+
 export const App = () => {
 
+ 
   return (
     <Router>
       <Menu />

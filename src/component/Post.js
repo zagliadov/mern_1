@@ -12,7 +12,7 @@ export const Post = ({ match }) => {
     const post = useSelector(state => state.post);
     const dispatch = useDispatch();
     const open = useSelector(state => state.open);
-
+    const role = useSelector(state => state.role);
     useEffect(() => {
         dispatch(getArticleUsingMatchParam(match.params.id))
     }, [match.params.id, dispatch, open]);
@@ -23,13 +23,16 @@ export const Post = ({ match }) => {
             <h1>{post.title}</h1>
             <hr />
             <p>{post.text}</p>
-            <Button
-                variant='contained'
-                color='primary'
-                component={Link}
-                to={'/edit/' + post._id} >
-                Edit
-            </Button>
+            {(role === 'ADMIN') ?
+                <Button
+                    variant='contained'
+                    color='primary'
+                    component={Link}
+                    to={'/edit/' + post._id} >
+                    Edit
+                </Button>
+                : null}
+
         </div>
     );
 }

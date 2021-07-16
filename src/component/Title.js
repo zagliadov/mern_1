@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core';
 import { IconButton } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import { deleteArticle, getArticlesFromDataBase, updateArticle } from '../store/actions';
 import { useHistory } from 'react-router-dom';
 
@@ -11,9 +10,10 @@ import { useHistory } from 'react-router-dom';
 const useStyles = makeStyles(theme => ({
     root: {
         display: 'flex',
-        justifyContent: 'start',
+        justifyContent: 'space-around',
         flexWrap: 'wrap',
         padding: '10px',
+        border: '1px solid red',
     },
     article: {
         display: 'flex',
@@ -21,9 +21,9 @@ const useStyles = makeStyles(theme => ({
         justifyContent: 'space-between',
         boxShadow: '0px 3px 10px silver',
         borderRadius: '5px',
-        width: '200px',
+        maxWidth: '30%',
+        minWidth: '400px',
         marginLeft: '10px',
-        minHeight: '200px',
         marginBottom: '20px',
         padding: '10px',
     }
@@ -33,28 +33,36 @@ export const Title = () => {
     const classes = useStyles();
     const posts = useSelector(state => state.posts);
     const open = useSelector(state => state.open);
-    const scrollPosition = useSelector(state => state.scrollPosition);
-
+    const role = useSelector(state => state.role);
     const dispatch = useDispatch();
     const history = useHistory();
-    ////////////////////////////////////////
-    useEffect(() => {
-        dispatch(getArticlesFromDataBase(scrollPosition))
-    }, [dispatch, open, scrollPosition]);
-    ////////////////////////////////////////
 
-    const handleClick = (id) => {
-        dispatch(deleteArticle(id))
-        dispatch(updateArticle(!open))
-        dispatch(getArticlesFromDataBase(scrollPosition));
+
+
+
+    const handleClick = async (id) => {
+         await dispatch(deleteArticle(id))
+         await dispatch(updateArticle(!open));
+         await dispatch(getArticlesFromDataBase())
+        // setTimeout(() => {
+        //     dispatch(getArticlesFromDataBase())
+        // }, 100);
+        history.push('/posts')
     }
+    // useEffect(() => {
+    //     dispatch(getArticlesFromDataBase());
 
+    // }, [open,]);
 
     const handleOpen = (id) => {
         window.scrollTo(0, 0);
         history.push(`/post/${id}`);
     }
 
+    const format = (text) => {
+        return text.substr(0, 130) + '...';
+
+    }
 
     return (
         <div className={classes.root}>
@@ -65,22 +73,25 @@ export const Title = () => {
                             <h2>{post.title}</h2>
                         </div>
                         <div>
-                            <p>{post.text}</p>
+                            <p>{format(post.text)}</p>
                         </div>
 
                         <div>
-                            <IconButton
-                                aria-label="delete"
-                                className={classes.margin}
-                                onClick={() => handleClick(post._id)} >
-                                <DeleteIcon fontSize="small" />
-                            </IconButton>
+                            {(role === 'ADMIN') ?
+                                <IconButton
+                                    aria-label="delete"
+                                    className={classes.margin}
+                                    onClick={() => handleClick(post._id)} >
+                                    <DeleteIcon fontSize="small" />
+                                </IconButton>
+                                : null}
+
                             <IconButton
                                 aria-label="delete"
                                 className={classes.margin}
                                 size="small"
                                 onClick={() => handleOpen(post._id)} >
-                                <ArrowDownwardIcon fontSize="inherit" />
+                                <p>Read more...</p>
                             </IconButton>
                         </div>
 
